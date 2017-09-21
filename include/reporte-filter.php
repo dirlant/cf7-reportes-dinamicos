@@ -60,7 +60,7 @@ table {
       <tr>
         <th width="5%">Fecha:</th>
         <th width="10%">
-          <input type="date" name="desde" value="<?php echo $_GET['desde'] ?>" required>
+          <input type="date" name="desde" value="<?php echo $_GET['desde'] ?>" >
         </th>
         <th width="5%">Hasta:</th>
         <th width="10%">
@@ -76,29 +76,37 @@ table {
       </tr>
     </form>
   </thead>
-<table class="wp-list-table widefat striped">
-  <thead>
-    <tr>
-      <th>#</th>
-      <?php
-        // se extraen las key del arreglo
-        $titulos =  end($arreglo);
-        $titulos = (array_keys($titulos));
-      ?>
-      <?php for ($i=0; $i < count($titulos); $i++): ?>
-      <th class="manage-column"><?php echo $titulos[$i] ?></th>
-      <?php endfor; ?>
-    </tr>
-  </thead>
-  <tbody>
-      <?php for ($i=1; $i <= $filas; $i++): ?>
+  <?php if(count($arreglo) >= 1): ?>
+    <table class="wp-list-table widefat striped">
+      <thead>
         <tr>
-          <td><?php echo $i; ?></td>
-          <?php for ($j=0; $j < count($titulos); $j++): ?>
-            <td><?php echo (isset($arreglo[$i][$titulos[$j]])) ? $arreglo[$i][$titulos[$j]] : ''; ?></td>
+          <th>#</th>
+          <?php
+            // se extraen las key del arreglo
+            $titulos =  end($arreglo);
+            $titulos = (array_keys($titulos));
+          ?>
+          <?php for ($i=0; $i < count($titulos); $i++): ?>
+          <th class="manage-column"><?php echo $titulos[$i] ?></th>
           <?php endfor; ?>
         </tr>
-      <?php endfor; ?>
+      </thead>
+      <tbody>
+          <?php for ($i=1; $i <= $filas; $i++): ?>
+            <tr>
+              <td><?php echo $i; ?></td>
+              <?php for ($j=0; $j < count($titulos); $j++): ?>
+                <td><?php echo (isset($arreglo[$i][$titulos[$j]])) ? $arreglo[$i][$titulos[$j]] : ''; ?></td>
+              <?php endfor; ?>
+            </tr>
+          <?php endfor; ?>
 
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  <?php else: ?>
+    <table class="wp-list-table widefat striped">
+      <tr>
+        <th><p>No se encontraron resuldatos...</p></th>
+      </tr>
+    </table>
+  <?php endif; ?>

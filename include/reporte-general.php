@@ -38,9 +38,14 @@
       <?php include('reporte-filter.php'); ?>
   <?php endif; ?>
 
-  <?php if (isset($_GET['exportar'])): wpks_exportCSV($arreglo); endif;?>
+  <?php
+    if (isset($_GET['exportar'])){
+      wpks_exportCSV($arreglo);
+    }
+  ?>
 
   <?php
+
   /**
    *
    */
