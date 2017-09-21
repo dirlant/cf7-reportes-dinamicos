@@ -1,9 +1,8 @@
 <?php
   global $wpdb;
-
   $query = $wpdb->get_results(
     "SELECT *
-       FROM camionesjac.wp_posts
+       FROM ".$wpdb->prefix."posts
       WHERE post_type = 'wpcf7_contact_form'"
     );
 

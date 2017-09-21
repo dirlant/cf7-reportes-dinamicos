@@ -8,7 +8,7 @@
   if(!empty($_GET['formTitle'])){
     $query = $wpdb->get_results(
       "SELECT *
-  	     FROM camionesjac.wp_cf7dbplugin_submits
+  	     FROM ".$wpdb->prefix."cf7dbplugin_submits
   	    WHERE form_name = '$nameForm'"
       );
   }
@@ -21,7 +21,7 @@
     $hasta = (empty($_GET['hasta'])) ? date("Y-m-d").' 23:59:59' : $_GET['hasta'].' 23:59:59';
     $query = $wpdb->get_results(
       "SELECT *
-  	     FROM camionesjac.wp_cf7dbplugin_submits
+  	     FROM ".$wpdb->prefix."cf7dbplugin_submits
   	    WHERE form_name = '$nameForm'
           AND form_date BETWEEN '$desde' AND '$hasta'"
       );
@@ -35,7 +35,7 @@
     if ($key->field_name == 'nombre') {
       // Aumenta el contador siempre que el campo sea distinto
       $i++;
-      $arreglo[$i]['date'] = date("d-m-Y", strtotime($key->form_date));
+      $arreglo[$i]['date'] = ($key->form_date != '0000-00-00 00:00:00') ? date("d-m-Y", strtotime($key->form_date)) : 'N/A';
       $arreglo[$i][$key->field_name] = $key->field_value;
     }else{
       $arreglo[$i][$key->field_name] = $key->field_value;
@@ -94,8 +94,8 @@ table {
       <?php for ($i=1; $i <= $filas; $i++): ?>
         <tr>
           <td><?php echo $i; ?></td>
-          <?php for ($j=0; $j <= count($titulos); $j++): ?>
-            <td><?php echo $arreglo[$i][$titulos[$j]] ?></td>
+          <?php for ($j=0; $j < count($titulos); $j++): ?>
+            <td><?php echo (isset($arreglo[$i][$titulos[$j]])) ? $arreglo[$i][$titulos[$j]] : ''; ?></td>
           <?php endfor; ?>
         </tr>
       <?php endfor; ?>
