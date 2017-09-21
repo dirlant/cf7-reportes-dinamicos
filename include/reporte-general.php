@@ -39,95 +39,34 @@
       <?php include('reporte-filter.php'); ?>
   <?php endif; ?>
 
-  <?php if (isset($_GET['exportar'])): ?>
+  <?php if (isset($_GET['exportar'])): wpks_exportCSV($arreglo); endif;?>
 
-      <?php
-        exportCSV($arreglo);
-
-
-
-      ?>
-  <?php endif; ?>
-
-
-
-    <?php
-
-    function exportCSV($array){
-
-      ob_clean();
-
-      header('Content-Type: text/csv');
-      header('Content-Disposition: attachment;filename=' . 'exportable.csv');
-      if(isset($array[1])){
-          $fp = fopen('php://output', 'w');
-          fputcsv($fp, array_keys($array[1]));
-          foreach($array AS $values){
-            fputcsv($fp, $values);
-          }
-          fclose($fp);
-          die();
-      }
-      ob_flush();
-
-  }
-
-
-      // Preparando encabezado
-      /*
-      $row[] = array(
-          "ID",
-          "rut_proveedor",
-          "password",
-          "proveedor",
-          "rut"
-      );
-      foreach($query as $key){
-          $row[] = array(
-              $key->ID,
-              $key->rut_proveedor,
-              $key->password,
-              $key->proveedor
-          );
-      }
-      */
-
-
-      //$export = New ExportFile($row, 'archivo', '.csv');
-      //return $export->exportToCSV();
-      //return csvFile($row, 'archivo');
-
-    ?>
-
-
-<?php
-
-
-/**
- *
- */
-class ExportFile {
-  public $array = array();
-  function __construct($array, $nombre, $extension) {
-    $this->args = $array;
-    $this->nombre = $nombre;
-    $this->extension = $extension;
-  }
-
-  public function exportToCSV() {
-    $upload_dir = wp_upload_dir();
-    $fecha = date('dmYHis');
-    $filename = $upload_dir['path'] . DIRECTORY_SEPARATOR . $this->nombre.'_'. $fecha . $this->extension;
-    $filename_url = $upload_dir['url']  . '/'.$this->nombre.'_'. $fecha . $this->extension;
-    $content = '';
-    $content .= "\xEF\xBB\xBF";
-    foreach($this->args as $row) {
-        $content .= implode(';', $row)."\r";
+  <?php
+  /**
+   *
+   */
+  class ExportFile {
+    public $array = array();
+    function __construct($array, $nombre, $extension) {
+      $this->args = $array;
+      $this->nombre = $nombre;
+      $this->extension = $extension;
     }
-    file_put_contents($filename, $content);
-    return wp_safe_redirect($filename_url);
-  }
-}
 
-?>
+    public function exportToCSV() {
+      $upload_dir = wp_upload_dir();
+      $fecha = date('dmYHis');
+      $filename = $upload_dir['path'] . DIRECTORY_SEPARATOR . $this->nombre.'_'. $fecha . $this->extension;
+      $filename_url = $upload_dir['url']  . '/'.$this->nombre.'_'. $fecha . $this->extension;
+      $content = '';
+      $content .= "\xEF\xBB\xBF";
+      foreach($this->args as $row) {
+          $content .= implode(';', $row)."\r";
+      }
+      file_put_contents($filename, $content);
+      return wp_safe_redirect($filename_url);
+    }
+  }
+
+  ?>
 </div>

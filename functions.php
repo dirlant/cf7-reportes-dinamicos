@@ -10,4 +10,20 @@
   	}
   }
 
+  function wpks_exportCSV($array){
+    ob_clean();
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment;filename=' . 'reporte.csv');
+    if(isset($array[1])){
+        $fp = fopen('php://output', 'w');
+        fputcsv($fp, array_keys($array[1]));
+        foreach($array AS $values){
+          fputcsv($fp, $values);
+        }
+        fclose($fp);
+        die();
+    }
+    ob_flush();
+  }
+
 ?>
